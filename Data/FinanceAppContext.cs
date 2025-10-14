@@ -6,7 +6,7 @@ namespace FinanceApp.Data
     {
         public FinanceAppContext(DbContextOptions<FinanceAppContext> options):base(options) { }
 
-        DbSet<Models.Expense> Expenses { get; set; }
+        public DbSet<Models.Expense> Expenses { get; set; }
 
 
     }
