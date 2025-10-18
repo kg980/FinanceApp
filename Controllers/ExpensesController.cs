@@ -36,5 +36,12 @@ namespace FinanceApp.Controllers
             }
             return View(expense); // return the form with validation errors
         }
+
+        public IActionResult GetChart()
+        {
+            var data = _expensesService.GetChartData();
+            return Json(data);
+        }
+
     }
 }
