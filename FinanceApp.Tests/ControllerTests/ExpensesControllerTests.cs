@@ -8,6 +8,7 @@ using FinanceApp.Controllers;
 using FinanceApp.Data.Service;
 using FinanceApp.Models;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 
@@ -62,5 +63,48 @@ namespace FinanceApp.Tests.Controller
                 .Which.Result.Should().BeOfType<Microsoft.AspNetCore.Mvc.ViewResult>()
                 .Which.Model.Should().BeEquivalentTo(expenses);
         }
+
+
+        [Fact]
+        public void ExpensesController_GetChart_ReturnsJsonResult()
+        {
+            // Arrange
+            var data = A.Fake<IQueryable<Expense>>();
+            A.CallTo(() => _expensesService.GetChartData()).Returns(data);
+
+            // Act
+            var result = _expensesController.GetChart();
+
+            // Assert
+            Assert.IsType<Microsoft.AspNetCore.Mvc.JsonResult>(result);
+            Assert.Equal(data, ((Microsoft.AspNetCore.Mvc.JsonResult)result).Value);
+
+            result.Should().BeOfType<Microsoft.AspNetCore.Mvc.JsonResult>()
+                .Which.Value.Should().BeEquivalentTo(data);
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task ExpensesController_Create_WhenModelStateIsValid_ReturnsRedirectToIndex()
+        {
+            // Arrange - Set up the variable needed by the method, call to the method
+            var expense = new Expense { Id = 1, Description = "Test Expense", Amount = 100 };
+            A.CallTo(() => _expensesService.Add(expense)).DoesNothing();
+
+            // Act - actually 'call' the method into a result which I can assert
+            var result = await _expensesController.Create(expense);
+
+            // Assert - Assert it !!!!
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+
+            result.Should().BeOfType<RedirectToActionResult>()
+                .Which.ActionName.Should().Be("Index");
+
+            A.CallTo(() => _expensesService.Add(expense))
+                .MustHaveHappenedOnceExactly();
+        }
+
     }
+
 }
