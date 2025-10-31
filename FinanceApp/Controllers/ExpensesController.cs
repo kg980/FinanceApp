@@ -12,6 +12,7 @@ namespace FinanceApp.Controllers
         
         public ExpensesController(IExpensesService expensesService)
         {
+            // Dependency injection (from outside)
             _expensesService = expensesService;
         }
 
