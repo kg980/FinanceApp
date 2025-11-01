@@ -1,5 +1,5 @@
-﻿using FinanceApp.Models;
-using FinanceApp.Repository;
+﻿using FinanceApp.Data.Repository;
+using FinanceApp.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceApp.Data.Service

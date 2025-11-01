@@ -62,6 +62,43 @@ namespace FinanceApp.Tests.Controller
                 .Which.Model.Should().BeEquivalentTo(expenses);
         }
 
+        [Fact]
+        public void GetChart_ReturnsJsonResult()
+        {
+            // Arrange
+            var fakeData = A.Fake<IQueryable<Expense>>();
+            A.CallTo(() => _expensesService.GetChartData()).Returns(fakeData);
+
+            // Act
+            var result = _expensesController.GetChart();
+
+            // Assert
+            result.Should().BeOfType<JsonResult>()
+                .Which.Value.Should().BeEquivalentTo(fakeData);
+        }
+
+        [Fact]
+        public async Task ExpensesController_Create_ReturnsRedirectToIndex()
+        {
+            // Arrange - Set up the variable needed by the method, call to the method
+            var expense = new Expense { Id = 1, Description = "Test Expense", Amount = 100 };
+            A.CallTo(() => _expensesService.AddExpense(expense)).DoesNothing();
+
+            // Act - actually 'call' the method into a result which I can assert
+            var result = await _expensesController.Create(expense);
+
+            // Assert - Assert it !!!!
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+
+            result.Should().BeOfType<RedirectToActionResult>()
+                .Which.ActionName.Should().Be("Index");
+
+            A.CallTo(() => _expensesService.AddExpense(expense))
+                .MustHaveHappenedOnceExactly();
+        }
+
+
         // TODO: This functionality has been moved to Repository layer, move this test to RepositoryTests.ExpensesRepositoryTests
         //[Fact]
         //public void ExpensesController_GetChart_ReturnsJsonResult()
@@ -101,41 +138,6 @@ namespace FinanceApp.Tests.Controller
         //    // Verify that the repository method was actually called once
         //    A.CallTo(() => _repository.GetChartData()).MustHaveHappenedOnceExactly();
         //}
-        [Fact]
-        public void GetChart_ReturnsJsonResult()
-        {
-            // Arrange
-            var fakeData = A.Fake<IQueryable<Expense>>();
-            A.CallTo(() => _expensesService.GetChartData()).Returns(fakeData);
-
-            // Act
-            var result = _expensesController.GetChart();
-
-            // Assert
-            result.Should().BeOfType<JsonResult>()
-                .Which.Value.Should().BeEquivalentTo(fakeData);
-        }
-
-        [Fact]
-        public async Task ExpensesController_Create_ReturnsRedirectToIndex()
-        {
-            // Arrange - Set up the variable needed by the method, call to the method
-            var expense = new Expense { Id = 1, Description = "Test Expense", Amount = 100 };
-            A.CallTo(() => _expensesService.AddExpense(expense)).DoesNothing();
-
-            // Act - actually 'call' the method into a result which I can assert
-            var result = await _expensesController.Create(expense);
-
-            // Assert - Assert it !!!!
-            var redirect = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Index", redirect.ActionName);
-
-            result.Should().BeOfType<RedirectToActionResult>()
-                .Which.ActionName.Should().Be("Index");
-
-            A.CallTo(() => _expensesService.AddExpense(expense))
-                .MustHaveHappenedOnceExactly();
-        }
 
     }
 

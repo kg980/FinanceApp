@@ -1,6 +1,6 @@
 ﻿using FinanceApp.Models;
 
-namespace FinanceApp.Repository
+namespace FinanceApp.Data.Repository
 {
     public interface IExpensesRepository
     {

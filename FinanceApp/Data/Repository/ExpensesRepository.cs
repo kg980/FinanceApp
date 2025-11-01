@@ -2,7 +2,7 @@
 using FinanceApp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinanceApp.Repository
+namespace FinanceApp.Data.Repository
 {
     public class ExpensesRepository : IExpensesRepository
     {
