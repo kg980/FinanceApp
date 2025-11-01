@@ -8,6 +8,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<FinanceAppContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<FinanceApp.Data.Service.IExpensesService, FinanceApp.Data.Service.ExpensesService>();
+builder.Services.AddScoped<FinanceApp.Data.Repository.IExpensesRepository, FinanceApp.Data.Repository.ExpensesRepository>();
 
 var app = builder.Build();
 
