@@ -18,7 +18,7 @@ namespace FinanceApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var expenses = await _expensesService.GetAll();
+            var expenses = await _expensesService.GetAllExpenses();
             return View(expenses);
         }
 
@@ -32,7 +32,7 @@ namespace FinanceApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _expensesService.Add(expense);
+                await _expensesService.AddExpense(expense);
                 return RedirectToAction("Index");
             }
             return View(expense); // return the form with validation errors
