@@ -85,7 +85,7 @@ namespace FinanceApp.Tests.Controller
         }
 
         [Fact]
-        public async Task ExpensesController_Create_WhenModelStateIsValid_ReturnsRedirectToIndex()
+        public async Task ExpensesController_Create_ReturnsRedirectToIndex()
         {
             // Arrange - Set up the variable needed by the method, call to the method
             var expense = new Expense { Id = 1, Description = "Test Expense", Amount = 100 };
